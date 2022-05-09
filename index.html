@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Speed Racer</title>
+    <!-- Lib -->
+    <script src="./lib/p5.min.js"></script>
+    <script src="./lib/p5.dom.min.js"></script>
+    <script src="./lib/p5.sound.min.js"></script>
+    <script src="./lib/p5.play.js"></script>
+
+    <link rel="stylesheet" href="style.css" />
+    
+    <script src="./js/Game.js"></script>
+    <script src="./js/Form.js"></script>
+    <script src="./js/Player.js"></script>
+    <script>
+
+     const firebaseConfig = {
+      apiKey: "AIzaSyAfREAoC-khsaqsTOMnxM86U2yvS5UEGAs",
+      authDomain: "race-runner-e280b.firebaseapp.com",
+      databaseURL: "https://race-runner-e280b-default-rtdb.firebaseio.com",
+      projectId: "race-runner-e280b",
+      storageBucket: "race-runner-e280b.appspot.com",
+      messagingSenderId: "881146497542",
+      appId: "1:881146497542:web:349b5c6b9787c06b47d187"
+     };
+
+     firebase.initializeApp(firebaseConfig);
+    </script>
+  </head>
+  <body>
+    
+    <script src="./sketch.js"></script>
+  </body>
+</html>
