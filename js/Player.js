@@ -16,7 +16,7 @@ class Player {
 
   updateCount(count){
     database.ref("/").update({
-      playerCount: count,
+      PlayerCount: count,
     });
   }
 
@@ -35,4 +35,12 @@ class Player {
 
   }
 
+  static getPlayerInfo()
+  {
+    var playerInfoRef = database.ref("players");
+     playerInfoRef.on("value", data =>{
+      allPlayers = data.val();
+       
+    })
+  }
 }
