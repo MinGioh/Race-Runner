@@ -32,11 +32,11 @@ class Form {
         this.playButton.hide();
         var message = `Olá, ${this.input.value()} </br>espere o outro jogador entrar`;
         this.greeting.html(message);
-        playerCount += 1;
+        PlayerCount += 1;
         player.name = this.input.value();
-        player.index = playerCount;
+        player.index = PlayerCount;
         player.addPlayer();
-        player.updateCount(playerCount);
+        player.updateCount(PlayerCount);
     });
 }
 

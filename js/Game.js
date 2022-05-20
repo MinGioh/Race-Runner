@@ -5,7 +5,7 @@ class Game {
     form = new Form();
     form.display();
     player = new Player();
-    playerCount = player.getCount();
+    PlayerCount = player.getCount();
     car1 = createSprite(width/2-50, height-100);
     car2 = createSprite(width/2+100, height-100);
     cars = [car1, car2];
@@ -20,16 +20,39 @@ class Game {
   play(){
     this.handleElements();
     Player.getPlayersInfo();
+    
     if(allPlayers!=undefined){
       image(backgroundImage,0,-height*5,width,height*5);
+  
+    var index = 0;
+    for(var plr in allPlayers){
+      index = index + 1;
+      var x = allPlayers[plr].positionX;
+      var y = height - allPlayers[plr].positionY;
+
+      cars[index-1].position.x = x;
+      cars[index-1].position.y = y;
+
     }
+
+     //chamada da função de controle do player
+     this.handlePlayerControls();
+
     drawSprites();
+    }
+  }
+
+  handlePlayerControls(){
+    if(keyIsDown(UP_ARROW)){
+      player.positionY += 10;
+      player.update();
+    }
   }
 
   getState(){
-    var gameStateRef = database.ref("gameState");
+    var gameStateRef = database.ref("GameState");
     gameStateRef.on("value", function(data){
-      gameState = data.val();
+      GameState = data.val();
     });
   }
 
