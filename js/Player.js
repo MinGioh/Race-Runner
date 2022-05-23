@@ -28,9 +28,7 @@ class Player {
     });
   }
 
-
-
-  addPlayer(){
+   addPlayer(){
     var playerIndex = "players/player" + this.index;
     if(this.index === 1){
       this.positionX = width/2 - 100;
@@ -53,4 +51,13 @@ class Player {
        
     })
   }
+
+   getDistance(){
+     var playerDistanceRef = database.ref("players/player" + this.index);
+     playerDistanceRef.on("value", data =>{
+       var data = data.val();
+       this.positionX = data.positionX;
+       this.positionY = data.positionY;
+     });
+   }
 }

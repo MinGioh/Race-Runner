@@ -7,10 +7,14 @@ var PlayerCount;
 var GameState;
 var allPlayers;
 var car1, car2, car1Img, car2Img;
+var pista;
 var cars = [];
 
 function preload() {
   backgroundImage = loadImage("./assets/planodefundo.png");
+  car1Img = loadImage("./assets/car1.png");
+  car2Img = loadImage("./assets/car2.png");
+  pista = loadImage("./assets/PISTA.png");
 }
 
 function setup() {
