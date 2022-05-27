@@ -54,6 +54,7 @@ class Game {
       image(pista,0,-height*5,width,height*5);
 
       this.showLeaderBoard();
+      this.handleResetButton();
   
     var index = 0;
     for(var plr in allPlayers){
@@ -115,6 +116,18 @@ class Game {
       this.leader1.html(leader1);
       this.leader2.html(leader2);
     }
+  }
+
+  handleResetButton(){
+    this.resetButton.mousePressed(()=>{
+      database.ref("/").set({
+        PlayerCount:0,
+        GameState:0,
+        carsAtEnd:0,
+        players:{}
+      });
+      window.location.reload();
+    })
   }
 
   handlePlayerControls(){
