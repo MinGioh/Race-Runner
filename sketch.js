@@ -11,6 +11,7 @@ var pista;
 var cars = [];
 var fuels, powerCoins, fuelsImg, powerCoinsImg;
 var obstacle1Image, obstacle2Image;
+var obstaculos;
 
 function preload() {
   backgroundImage = loadImage("./assets/planodefundo.png");

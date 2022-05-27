@@ -24,6 +24,7 @@ class Game {
     //criar os grupos de sprites
     fuels = new Group();
     powerCoins = new Group();
+    obstaculos = new Group();
 
     var obstaclesPositions = [
       { x: width / 2 + 250, y: height - 800, image: obstacle2Image },
@@ -43,6 +44,7 @@ class Game {
     //adicionar os sprites de combustível e moeda
     this.addSprites(fuels,10,fuelsImg,0.02);
     this.addSprites(powerCoins,15,powerCoinsImg,0.09);
+    this.addSprites(obstaculos,obstaclesPositions.length,obstacle1Image,0.04,obstaclesPositions);
 
   }
 
@@ -159,6 +161,16 @@ class Game {
       player.positionY += 10;
       player.update();
     }
+    
+    if(keyIsDown(LEFT_ARROW) && player.positionX> width/3-50){
+      player.positionX -= 10;
+      player.update();
+    }
+    
+    if(keyIsDown(RIGHT_ARROW) && player.positionX< width/2+300){
+      player.positionX += 10;
+      player.update();
+    }
   }
 
   getState(){
@@ -175,13 +187,19 @@ class Game {
   });
  }
 
- addSprites(spriteGroup, numberOfSprites, spriteImage, scale){
+ addSprites(spriteGroup, numberOfSprites, spriteImage, scale, positions=[]){
    for(var i=0; i < numberOfSprites; i++){
      var x, y;
-     x = random(width/2 - 150, width/2 + 150);
-     y = random(-height*4.5, height-400);
-
-     var sprite = createSprite(x,y);
+     if(positions.length>0){
+       x = positions[i].x;
+       y = positions[i].y;
+       spriteImage = positions[i].image;
+     } else {
+      x = random(width/2 - 150, width/2 + 150);
+      y = random(-height*4.5, height-400);
+ 
+     }
+       var sprite = createSprite(x,y);
      sprite.addImage("sprite", spriteImage);
 
      sprite.scale = scale;
