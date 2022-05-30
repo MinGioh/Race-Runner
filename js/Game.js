@@ -97,7 +97,8 @@ class Game {
         fill("red");
         ellipse(x,y,60);
 
-       // this.handleFuel();
+        //this.handleFuel();
+        //this.handlePowerCoins();
 
         camera.position.x = cars[index-1].position.x;
         camera.position.y = cars[index-1].position.y;
@@ -230,12 +231,21 @@ class Game {
      player.fuel = 185;
      collected.remove();
    });
-
-
+   if(player.fuel<=0){
+     gameState = 2;
+     this.gameOver();
+   }
  }
 
  //coleta das moedas
-
+ handlePowerCoins(index){
+  //adicionando combustível (carro = collector / combustível = collected)
+  cars[index-1].overlap(powerCoins, function(collector,collected){
+    player.score += 20;
+    collected.remove();
+    player.update();
+  });
+}
 
  //mostrar o ranking
  showRank(){
@@ -249,6 +259,15 @@ class Game {
  }
 
  //mostrar quem perdeu
+ gameOver(){
+   swal({
+     title: `Fim de Jogo`,
+     text: "Você perdeu",
+     imageUrl: "https://cdn.shopify.com/s/files/1/1061/1924/products/Thumbs_Down_Sign_Emoji_Icon_ios10_grande.png",
+     imageSize: "100x100",
+     confirmButtonText: "Ok",
+   })
+ }
 
  // mostrar a barra de vidas
  showLife(){
