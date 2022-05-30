@@ -75,6 +75,7 @@ class Game {
   play(){
     this.handleElements();
     Player.getPlayersInfo();
+    player.getCarsAtEnd();
     
     if(allPlayers!=undefined){
       image(pista,0,-height*5,width,height*5);
@@ -90,17 +91,32 @@ class Game {
 
       cars[index-1].position.x = x;
       cars[index-1].position.y = y;
+      
+      //ações para cada player
       if(index==player.index){
         fill("red");
         ellipse(x,y,60);
+
+       // this.handleFuel();
+
         camera.position.x = cars[index-1].position.x;
         camera.position.y = cars[index-1].position.y;
       }
-     
     }
 
      //chamada da função de controle do player
      this.handlePlayerControls();
+
+     //chamada da função de atualização do ranking
+     const finishLine = height*6 - 100;
+
+     if(player.positionX > finishLine){
+       gameState = 2;
+       player.rank +=1;
+       Player.updateCarsAtEnd(player.rank);
+       player.update();
+       this.showRank();
+     }
 
     drawSprites();
     }
@@ -207,7 +223,45 @@ class Game {
    }
  }
 
+ //sobreposição de sprites (coleta dos combustíveis)
+ handleFuel(index){
+   //adicionando combustível (carro = collector / combustível = collected)
+   cars[index-1].overlap(fuels, function(collector,collected){
+     player.fuel = 185;
+     collected.remove();
+   });
 
 
+ }
+
+ //coleta das moedas
+
+
+ //mostrar o ranking
+ showRank(){
+   swal({
+    title: `Incrível!${"\n"}Rank${"\n"}${player.rank}`,
+    text: "Você alcançou a linha de chegada com sucesso",
+    imageUrl: "https://raw.githubusercontent.com/vishalgaddam873/p5-multiplayer-car-race-game/master/assets/cup.png",
+    imageSize: "100x100",
+    confirmButtonText: "Ok",
+   })
+ }
+
+ //mostrar quem perdeu
+
+ // mostrar a barra de vidas
+ showLife(){
+   push();
+   image(lifeImg, width/2 - 130, height - player.positionY - 400, 20,20);
+   fill("white");
+   rect(width/2 - 100, height - player.positionY - 400, 185,20);
+   fill("red");
+   rect(width/2 - 100, height - player.positionY - 400, player.life,20);
+   noStroke();
+   pop();
+ }
+
+ //mostrar a barra de combustíveis
 
 }
