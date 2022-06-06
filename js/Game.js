@@ -9,16 +9,20 @@ class Game {
   }
 
   start() {
-    form = new Form();
-    form.display();
     player = new Player();
     PlayerCount = player.getCount();
+
+    form = new Form();
+    form.display();
+    
     car1 = createSprite(width/2-50, height-100);
-     car1.addImage(car1Img);
-      car1.scale = 0.07;
+    car1.addImage(car1Img);
+    car1.scale = 0.07;
+
     car2 = createSprite(width/2+100, height-100);
-     car2.addImage(car2Img);
-      car2.scale = 0.07;
+    car2.addImage(car2Img);
+    car2.scale = 0.07;
+
     cars = [car1, car2];
 
     //criar os grupos de sprites
@@ -74,34 +78,41 @@ class Game {
 
   play(){
     this.handleElements();
+    this.handleResetButton();
+
     Player.getPlayersInfo();
     player.getCarsAtEnd();
     
     if(allPlayers!=undefined){
       image(pista,0,-height*5,width,height*5);
 
+      this.showLife(); //incluí aqui
+      //chamar a showFuel
       this.showLeaderBoard();
-      this.handleResetButton();
-  
-    var index = 0;
-    for(var plr in allPlayers){
-      index = index + 1;
-      var x = allPlayers[plr].positionX;
-      var y = height - allPlayers[plr].positionY;
-
-      cars[index-1].position.x = x;
-      cars[index-1].position.y = y;
       
-      //ações para cada player
-      if(index==player.index){
-        fill("red");
-        ellipse(x,y,60);
+      var index = 0;
+      for(var plr in allPlayers){
+        index = index + 1;
+        
+        var x = allPlayers[plr].positionX;
+        var y = height - allPlayers[plr].positionY;
+      
+        //inserir a variável de vida atual
 
-        //this.handleFuel();
-        //this.handlePowerCoins();
+        cars[index-1].position.x = x;
+        cars[index-1].position.y = y;
+      
+        //ações para cada player
+        if(index==player.index){
+          fill("red");
+          ellipse(x,y,60);
 
-        camera.position.x = cars[index-1].position.x;
-        camera.position.y = cars[index-1].position.y;
+          this.handleFuel(index); 
+          this.handlePowerCoins(index); 
+          this.handleObstaclesCollision(index);
+
+          //camera.position.x = cars[index-1].position.x; alterei aqui
+          camera.position.y = cars[index-1].position.y;
       }
     }
 
@@ -111,8 +122,8 @@ class Game {
      //chamada da função de atualização do ranking
      const finishLine = height*6 - 100;
 
-     if(player.positionX > finishLine){
-       gameState = 2;
+     if(player.positionY > finishLine){
+       GameState = 2; //alterei aqui G minúsculo
        player.rank +=1;
        Player.updateCarsAtEnd(player.rank);
        player.update();
@@ -134,12 +145,13 @@ class Game {
       "&emsp;" + 
       players[0].score;
 
-      leader1 = 
+      leader2 =  
       players[1].rank +
       "&emsp;" + 
       players[1].name +
       "&emsp;" + 
       players[1].score;
+
     if(players[1].rank === 1){
       leader1 = 
       players[1].rank +
@@ -148,7 +160,7 @@ class Game {
       "&emsp;" + 
       players[1].score;
 
-      leader1 = 
+      leader2 = 
       players[0].rank +
       "&emsp;" + 
       players[0].name +
@@ -231,8 +243,11 @@ class Game {
      player.fuel = 185;
      collected.remove();
    });
+
+   //inserir condição para reduzir o combustível do carro
+
    if(player.fuel<=0){
-     gameState = 2;
+     GameState = 2; //estava gameState
      this.gameOver();
    }
  }
@@ -242,8 +257,22 @@ class Game {
   //adicionando combustível (carro = collector / combustível = collected)
   cars[index-1].overlap(powerCoins, function(collector,collected){
     player.score += 20;
-    collected.remove();
     player.update();
+
+    collected.remove();
+  });
+}
+
+//colisão com os obstáculos
+handleObstaclesCollision(index){
+  //if(cars[index-1].collide(obstaculos)){
+    cars[index-1].overlap(obstaculos, function(collector,collected){
+    if(player.life > 0){
+      player.life -= 185/4;
+    }
+    player.update();
+    collected.remove();
+    
   });
 }
 
